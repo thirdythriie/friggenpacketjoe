@@ -119,10 +119,26 @@ all.forEach(e=>{
   im.onerror=()=>{missing.push(e.file);done();};
   im.src=e.image;
 });
+const COOLDOWN_MS=60e3,CD_KEY="arrascordle_cooldown_end";
+let cdTimer=null;
+function startCooldown(end){
+  clearInterval(cdTimer);
+  const tick=()=>{
+    const left=(end-Date.now())/1e3;
+    if(left>0){rollBtn.disabled=true;rollBtn.innerHTML=Math.ceil(left)+'s<span class="loading loading-spinner loading-xs"></span>';}
+    else{clearInterval(cdTimer);rollBtn.disabled=false;rollBtn.innerText="Roll Again";try{localStorage.removeItem(CD_KEY);}catch(_){}}
+  };
+  tick();
+  if(end-Date.now()>0)cdTimer=setInterval(tick,250);
+}
+function resumeCooldown(){
+  try{const end=+localStorage.getItem(CD_KEY);if(end&&end>Date.now())startCooldown(end);}catch(_){}
+}
 function done(){
   if(--pending>0)return;
   c.forEach(e=>{e.pos=1+c.filter(o=>o.score>e.score).length;});
   rollBtn.disabled=c.length===0;
+  resumeCooldown();
   report();
 }
 function report(){
@@ -161,10 +177,9 @@ rollBtn.addEventListener("click",()=>{
   const t=thresholds;
   e.score>t[3]?(a.push("aura-xl"),s.push("font-bold")):e.score>t[2]?(a.push("aura-lg"),s.push("font-semibold")):e.score>t[1]?(a.push("aura-md"),s.push("font-medium")):e.score>t[0]?(a.push("aura-sm"),s.push("font-medium")):(a.push("aura-xs"),s.push("font-light"));
   aura.className=a.join(" ");scoreEl.className=s.join(" ");
-  const end=Date.now()+2e3,iv=setInterval(()=>{
-    const left=(end-Date.now())/1e3;
-    left>0?rollBtn.innerHTML=Math.ceil(left)+'s<span class="loading loading-spinner loading-xs"></span>':(rollBtn.disabled=false,rollBtn.innerText="Roll Again",clearInterval(iv));
-  },250);
+  const end=Date.now()+COOLDOWN_MS;
+  try{localStorage.setItem(CD_KEY,String(end));}catch(_){}
+  startCooldown(end);
 });
 
 exportBtn.addEventListener("click",async()=>{
