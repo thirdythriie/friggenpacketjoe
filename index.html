@@ -68,7 +68,7 @@
 			>
 			<p>Arrasdle idea by Anguisj</p>
 			<p>Implementation by DenisC</p>
-			<p>friggen arrascrodle yo</p>
+			<p>friggen arrascordle yo</p>
 		</footer>
 		<script defer>(()=>{
 var nameEl=document.getElementById("mockup-name"),stats=document.getElementById("mockup-stats"),
@@ -134,10 +134,36 @@ function startCooldown(end){
 function resumeCooldown(){
   try{const end=+localStorage.getItem(CD_KEY);if(end&&end>Date.now())startCooldown(end);}catch(_){}
 }
+function showRoll(e){
+  current=e;nameEl.innerText=e.name;
+  pic.innerHTML="";
+  const img=document.createElement("img");
+  img.src=e.image;img.alt=e.name;
+  img.style.cssText="width:100%;height:100%;object-fit:cover;border-radius:50%";
+  pic.appendChild(img);
+  scoreEl.innerText=e.score+" EP";topEl.innerText="#"+e.pos;
+  badgesEl.innerHTML=e.badges.map(badgeHTML).join("");
+  pic.hidden=false;stats.hidden=false;exportBtn.hidden=false;
+  let a=aura.className.split(" "),s=scoreEl.className.split(" ");a.pop();s.pop();
+  const t=thresholds;
+  e.score>t[3]?(a.push("aura-xl"),s.push("font-bold")):e.score>t[2]?(a.push("aura-lg"),s.push("font-semibold")):e.score>t[1]?(a.push("aura-md"),s.push("font-medium")):e.score>t[0]?(a.push("aura-sm"),s.push("font-medium")):(a.push("aura-xs"),s.push("font-light"));
+  aura.className=a.join(" ");scoreEl.className=s.join(" ");
+}
+const ROLL_KEY="arrascordle_last_roll";
+function restoreRoll(){
+  try{
+    const d=JSON.parse(localStorage.getItem(ROLL_KEY)||"null");
+    if(!d)return;
+    const e=c.find(x=>x.file===d.file);
+    if(e)showRoll(e);
+    if(d.best&&d.best.name){best.name=d.best.name;best.score=d.best.score;coolEl.innerText="Best roll: "+best.name+" ("+best.score+" EP)";}
+  }catch(_){}
+}
 function done(){
   if(--pending>0)return;
   c.forEach(e=>{e.pos=1+c.filter(o=>o.score>e.score).length;});
   rollBtn.disabled=c.length===0;
+  restoreRoll();
   resumeCooldown();
   report();
 }
@@ -162,21 +188,10 @@ rollBtn.addEventListener("click",()=>{
   if(!c.length)return;
   rollBtn.disabled=true;rollBtn.innerHTML='<span class="loading loading-spinner loading-xs"></span>';
   const e=c[c.length*Math.random()|0];
-  current=e;nameEl.innerText=e.name;
-  pic.innerHTML="";
-  const img=document.createElement("img");
-  img.src=e.image;img.alt=e.name;
-  img.style.cssText="width:100%;height:100%;object-fit:cover;border-radius:50%";
-  pic.appendChild(img);
-  scoreEl.innerText=e.score+" EP";topEl.innerText="#"+e.pos;
-  badgesEl.innerHTML=e.badges.map(badgeHTML).join("");
+  showRoll(e);
   if(!best.name||e.score>best.score){best.name=e.name;best.score=e.score;}
   coolEl.innerText="Best roll: "+best.name+" ("+best.score+" EP)";
-  pic.hidden=false;stats.hidden=false;exportBtn.hidden=false;
-  let a=aura.className.split(" "),s=scoreEl.className.split(" ");a.pop();s.pop();
-  const t=thresholds;
-  e.score>t[3]?(a.push("aura-xl"),s.push("font-bold")):e.score>t[2]?(a.push("aura-lg"),s.push("font-semibold")):e.score>t[1]?(a.push("aura-md"),s.push("font-medium")):e.score>t[0]?(a.push("aura-sm"),s.push("font-medium")):(a.push("aura-xs"),s.push("font-light"));
-  aura.className=a.join(" ");scoreEl.className=s.join(" ");
+  try{localStorage.setItem(ROLL_KEY,JSON.stringify({file:e.file,best:{name:best.name,score:best.score}}));}catch(_){}
   const end=Date.now()+COOLDOWN_MS;
   try{localStorage.setItem(CD_KEY,String(end));}catch(_){}
   startCooldown(end);
