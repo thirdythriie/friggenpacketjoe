@@ -16,7 +16,6 @@ Server Booster, 28800, blud really used one of their boosts on arrascord of all 
 10000 messages, 16941, This Guy Sent 10000 Messages In The Discord Server Arras.io Nahh Boi
 Halloween Art Contest 2026, 16000, Bro submit thing for Halloween Contest 2026 Art Boii
 Beta Pentagon, 13395, this Blud got level 35, como se dice congratulation
-Beta Pentagon*, 13091, cybertrap reset my xp for no reason and i would be le beta petnagon if i no get xp reset so yes
 5000 messages, 7291, This Guy Sent 5000 Messages In The Discord Server Arras.io
 1m, 6472, got a 1m in the hit .io game Arras.io
 Pentagon, 5818, welcome to level 25 pentagon role bradar 
@@ -43,7 +42,7 @@ Cybertrap.png, 25000 messages, Game Moderator, Alpha Pentagon, Staff, 1m, Cybert
 bo.png, Gem, Staff, 10000 messages, 1m, Bro Is Funny, didy sus
 epicnUwUb.png, 2500 messages, Triangle, 410349, Bro Is Funny, didy sus
 sodalite.png, 10000 messages, Beta Pentagon, didy sus
-thirdy.png, chatclaudegrokdeepseekgpt pls help me make arrascordle, 10000 messages, Beta Pentagon*
+thirdy.png, chatclaudegrokdeepseekgpt pls help me make arrascordle, 10000 messages, Pentagon
 TearD.png, Server Booster, Triangle, Artist, 2500 messages
 bottle.png, Pentagon, 10000 messages, le note, Bro Is Funny, didy sus
 Briskseer.png, Gem, Halloween Art Contest 2026, Artist, 50000 messages
