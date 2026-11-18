@@ -203,7 +203,7 @@ exportBtn.addEventListener("click",async()=>{
   const n=Math.min(current.badges.length,5);
   for(let i=0;i<n;i++)lines.push(current.badges[i].name+" "+sign(current.badges[i].score));
   current.badges.length>5&&lines.push("-# +"+(current.badges.length-5)+" traits more");
-  lines.push("","[Arrascordle](https://thirdythriie.github.io/friggenpacketjoe)");
+  lines.push("","[Arrascordle](<https://www.youtube.com/watch?v=YBUFmDvtAf8>)");
   await navigator.clipboard.writeText(lines.join("\n"));
   exportBtn.innerText="Copied!";setTimeout(()=>{exportBtn.innerText="Export"},2e3);
 });
